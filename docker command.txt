@@ -1,0 +1,26 @@
+https://www.digitalocean.com/community/tutorials/how-to-set-up-laravel-nginx-and-mysql-with-docker-compose-on-ubuntu-20-04
+___________________________________________________________________________
+# with DATABASE
+	docker-compose exec db bash
+Bên trong container, đăng nhập vào tài khoản quản trị root MySQL :
+	mysql -u root -p
+mật khẩu trong docker-compose
+	show databases;
+
+tạo tài khoản người dùng sẽ được phép truy cập cơ sở dữ liệu này. Tên người dùng của bạn sẽ là laraveluser,
+Chỉ cần đảm bảo rằng tên người dùng và mật khẩu của bạn ở đây khớp với các chi tiết bạn đặt trong .env
+
+	GRANT ALL ON laravel.* TO 'laraveluser'@'%' IDENTIFIED BY 'your_laravel_db_password';
+Xóa các đặc quyền để thông báo cho máy chủ MySQL về những thay đổi:
+
+	FLUSH PRIVILEGES;
+Thoát MySQL:
+
+	EXIT;
+Cuối cùng, thoát khỏi container:
+
+	exit
+kiểm tra kết nối với MySQL bằng cách chạy artisan migratelệnh Laravel, lệnh này sẽ tạo một migrationsbảng trong cơ sở dữ liệu từ bên trong vùng chứa:
+
+	docker-compose exec app php artisan migrate
+
